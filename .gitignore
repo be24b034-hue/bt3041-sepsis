@@ -1,0 +1,8 @@
+cleaned/
+upload_parts/
+*.csv.gz*
+__pycache__/
+.ipynb_checkpoints/
+00_inspect.py
+/01_clean.py
+/02_patterns.py
