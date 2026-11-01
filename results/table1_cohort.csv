@@ -1,0 +1,4 @@
+group,n,age_median,age_IQR,male_%
+Healthy,42,37.0,30-63,57.1
+Other_ICU,281,64.0,53-73,61.9
+Sepsis,479,63.0,53-71,56.8

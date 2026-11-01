@@ -1,0 +1,54 @@
+=== Table 1
+             n  age_median age_IQR  male_%
+group                                     
+Healthy     42        37.0   30-63    57.1
+Other_ICU  281        64.0   53-73    61.9
+Sepsis     479        63.0   53-71    56.8
+Sepsis 28-day deaths: 114 / 479 (23.8%)
+
+=== What is associated with 28-day death (sepsis, n=479)
+                              variable           test  statistic       p                                                                                                                                                                                                                                                                                                                   detail
+                                   age        Welch t      3.101 0.00220                                                                                                                                                                                                                                                                                          mean died 64.5 vs survived 59.9
+                                   age Mann-Whitney U  24284.000 0.00699                                                                                                                                                                                                                                                                                            median died 66 vs survived 63
+                                   sex   Fisher exact      1.167 0.51700                                                                                                                                                                                                                                                                            death % {'female': 22.2, 'male': 25.0}; n=479
+                              diabetes   Fisher exact      0.889 0.67000                                                                                                                                                                                                                                                                               death % {'DM': 24.7, 'No_DM': 22.6}; n=390
+                              hospital   Fisher exact      0.740 0.19600                                                                                                                                                                                                                                                                      death % {'Amsterdam': 26.2, 'Utrecht': 20.8}; n=479
+                         Mars endotype     chi-square     11.238 0.01050                                                                                                                                                                                                                           death % {'Mars1': 34.1, 'Mars2': 21.6, 'Mars3': 17.8, 'Mars4': 18.9}; n=479; min expected 12.6
+                      infection_source     chi-square      2.768 0.42900                                                                                                                                                                                                                   death % {'CAP': 21.7, 'HAP': 22.4, 'abdominal': 16.7, 'other/unknown': 26.6}; n=478; min expected 11.4
+                ICU-acquired infection   Fisher exact      0.540 0.08590                                                                                                                                                                                                                                                                           death % {'ICUA': 32.6, 'No_ICUA': 20.7}; n=321
+platelet score (0 very low - 3 normal) Mann-Whitney U    831.000 0.36800                                                                                                                                                                                                                                                                                    n=95; median died 1.0 vs survived 2.0
+                array run date (batch)     chi-square     12.565 0.48200 death % {'2013-01-22': 14.7, '2013-02-06': 25.0, '2013-02-13': 29.7, '2013-03-05': 22.5, '2013-03-07': 23.8, '2013-03-12': 21.1, '2013-03-13': 28.6, '2013-03-14': 25.8, '2013-03-19': 19.4, '2013-03-20': 40.6, '2013-03-21': 26.7, '2013-03-26': 18.2, '2013-03-27': 5.9, '2013-04-03': 17.9}; n=479; min expected 2.6
+
+death rate by age band:
+          size   mean
+age_band             
+<50        107  0.140
+50-59       86  0.279
+60-69      148  0.209
+70-79      105  0.314
+80+         33  0.333
+
+logistic regression died ~ age + sex + Mars1 + hospital:
+                           OR  CI_low  CI_high      p
+C(hospital)[T.Utrecht]  0.700   0.451    1.085  0.111
+age                     1.023   1.007    1.040  0.005
+male                    1.205   0.777    1.868  0.405
+Mars1                   2.052   1.305    3.226  0.002
+
+=== Genes vs death: 680 genes FDR<0.05 of 8200 (564 lower, 116 higher in non-survivors); max |log2FC| 0.97
+top lower in died: ['TNFSF12', 'TRIM27', 'TNFRSF8', 'CX3CR1', 'AMICA1', 'ZNF862', 'CALHM2', 'INTS3']
+top higher in died: ['TUBG2', 'NCRNA00188', 'TMCC2', 'ELL2', 'KCNH2', 'TBC1D22B', 'TCP11L2', 'NEDD4L']
+sensitivity without 12 flagged sepsis samples (5 died, 7 Mars1): 251 genes FDR<0.05; overlap with main list 251; t-statistics correlate r = 0.984
+
+=== Sepsis vs healthy: 7007 genes FDR<0.05, 1131 also >2-fold
+top up in sepsis: ['CD177', 'ARG1', 'HP', 'C19orf59', 'RETN', 'GPR84', 'CLEC4D', 'MMP8']
+top down in sepsis: ['FCER1A', 'BCL11B', 'IL2RB', 'CCR3', 'TRBC1', 'IL7R', 'PVRIG', 'ITK']
+
+genes most correlated with age (Spearman): {'PURA': -0.24, 'CCT3': -0.21, 'OXNAD1': -0.21, 'HSPA8': -0.21} {'DLGAP3': 0.17, 'EFEMP2': 0.17, 'MUC21': 0.17, 'PLIN4': 0.18}
+
+=== PCA: all samples PC1+PC2 = 37% variance; sepsis only = 35%
+PC1: rho with age 0.06; died vs survived Mann-Whitney p = 0.317
+PC2: rho with age -0.04; died vs survived Mann-Whitney p = 0.000496
+batch: R^2 of run date on sepsis PC1-5: [0.025, 0.012, 0.015, 0.021, 0.014]
+
+figures: ['fig1_qc.png', 'fig2_cohort_mortality.png', 'fig3_pca.png', 'fig4_genes_death.png', 'fig5_km_mars.png']
